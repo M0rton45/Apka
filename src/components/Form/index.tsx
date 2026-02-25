@@ -1,6 +1,11 @@
 "use client";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { CustomInput } from "../Input";
+
+// Z tego co kumam to Form jest jakby kontenerem ktory tworzy cala logike i wzor
+// a Input jest kontenerem ktory odpowiada za wyswietlanie inputa i przekazywanie informacji do Forma
+// Opisuje sie jakby składniki(parametry) inputow w Formie jako te customyInputy
+// Potem tworzy sie interface żeby okreslić składniki(parametry)
 
 export const CustomForm = () => {
   const [name, setName] = useState("");
@@ -10,14 +15,27 @@ export const CustomForm = () => {
   // use State ktory bedzie mial informacje czy wszystkie pola sa wypelnione i jesli tak to dopiero pozwala kliknac submit
   const [isFormValid, setIsFormValid] = useState(false);
 
-  function handleSubmit() {
-    console.log(name, surname, phone);
+  //Nasłuchuje czy formularz jest wypelniony
+  useEffect(() => {
+    formValid();
+  }, [name, surname, phone]);
+
+  //Funkcja sprawdzajaca czy pola sa wypelnione
+  function formValid() {
+    console.log("form valid");
+    if (name && surname && phone) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
   }
+
+  // function handleSubmit() {
+  //   console.log(name, surname, phone);
+  // }
   // use Effect ktory sprawdza czy wszystkie pola sa wypelnione i jesli tak to dopiero pozwala kliknac submit
+  // Funckja zwracająca informacje z inputow formularza
   function sendBtn() {
-    // Chyba że useState zwraca wartosc to isFormValid?
-    // Sprawdzanie czy wszystkie pola sa wypelnione
-    // if (name && surname && phone)
     console.log("sended");
     console.log(name, surname, phone);
   }
@@ -32,10 +50,11 @@ export const CustomForm = () => {
       <CustomInput onChange={setPhone} value={phone} placeholder="Give phone" />
       {/* Na razie Send nie do klikniecia dopiero gdy wypelnione pola, disabled na false */}
       <button
+        // Warunek sprawdzajacy czy walidacja pomyślna(zmiana kolorow)
         className={`h-[40px] w-[auto] ${isFormValid ? "bg-[green]" : "bg-[red]"}`}
-        // disabled={!isFormValid}
+        // Wyłączenie przycisku dopóki formularz nie bedzie wypelniony
+        disabled={!isFormValid}
         onClick={sendBtn}
-        // disabled={true} wyłączenie przycisku
       >
         Send
       </button>
