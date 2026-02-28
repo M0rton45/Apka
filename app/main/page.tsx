@@ -8,7 +8,7 @@ export default function Home() {
       <div className="w-[50vw] h-[100%] bg-[#222]">
         {/* inputs */}
         <div className="flex justify-center w-[100%] items-center gap-[20px] flex-wrap">
-          <CustomForm />
+          <CustomForm/>
         </div>
       </div>
       <div className="w-[50vw] h-[100%] bg-[#122]">CV</div>
