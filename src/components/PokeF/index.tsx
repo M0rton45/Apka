@@ -24,8 +24,12 @@ export const PokeForm = () =>{
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`);
             setPokeData(response.data);
             console.log("Dane z API: ",response.data);
-            console.log("Dane z API: ",response.data.name);
-
+            console.log("Imie z API: ",response.data.name);
+            console.log(response.data.stats);
+            // to ilość hp
+            console.log(response.data.stats[0].base_stat);
+            // tekst hp czyli jakby typ 
+            console.log(response.data.stats[0].stat.name);
         }catch(error){
             console.log(error);
         }finally{
@@ -41,6 +45,27 @@ export const PokeForm = () =>{
             placeholder="Choose number"
         />
         <button onClick={choseBtn}>Chose</button>
+            {/* jeśli pokeData nie jest null to to co w nawiasie */}
+        {pokeData &&(
+            <>
+                <h2>Name:</h2>
+                <h2>{pokeData.name}</h2>
+                    {/* wyświetlanie umiejetności dzięki funkcji map która działa mniej wiecej jak automatyczna pętla do tablicy */}
+                    {/* trzeba było określić droge za parametrem item potem ability i name:any */}
+                    {/* tworzymy klucz index dla Reacta do indentyfikacji elementów na liście */}
+                    Skills:
+                {pokeData.abilities.map((item: { ability: { name: any; }; }, index: number) => (<li key={index}>{item.ability.name}</li>))}
+                    {/* zwrot stat */}
+                    Stats:
+                {pokeData.stats.map((item: any, index: number) => 
+                    (<div key={index}>{item.stat.name}: {item.base_stat}</div>))}
+                    Photo:
+                <img 
+                    src={pokeData.sprites.front_default} 
+                    alt={pokeData.name} 
+                />
+            </>
+        )}
     </>
 )
 }
